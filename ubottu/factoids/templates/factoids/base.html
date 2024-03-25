@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'factoids/css/styles.css' %}">
+    <link rel="icon" href="{% static 'factoids/images/favicon.ico' %}" type="image/x-icon">
+    <title>{% block title %}Factoids{% endblock %}</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const themeToggleButton = document.getElementById('theme-toggle');
+          const currentTheme = localStorage.getItem('theme') || 'light';
+        
+          if (currentTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeToggleButton.classList.add('active');
+          }
+        
+          themeToggleButton.addEventListener('click', function() {
+            document.body.classList.toggle('dark-theme');
+            themeToggleButton.classList.toggle('active');
+            localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+          });
+        });
+    </script> 
+</head>
+<body>
+    <header>
+        <h1>Factoids</h1>
+        <!-- Navigation, etc. -->
+    </header>
+    <div class="theme-toggle-container">
+        <button id="theme-toggle" class="btn toggle-switch">
+            <span class="switch"></span>
+        </button>
+        <span class="toggle-description">Dark Mode</span>
+    </div>
+    <main>
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    <footer>
+        <!-- Footer content -->
+    </footer>
+</body>
+</html>

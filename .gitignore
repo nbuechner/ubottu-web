@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+venv
+olm
+src
+.local
+.cmake
+.cache
+.ubottu
+.bashrc
+.python_history
+.bash_history
+.mbp
+*.db
+*.log
+plugins/*
+ubottu/maubot.db

@@ -1,0 +1,107 @@
+/* static/css/styles.css */
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10pt;
+}
+
+.dark-theme {
+    background-color: #343a40;
+    color: #ffffff;
+  }
+  
+.dark-theme .table {
+    color: #ffffff;
+    background-color: #454d55;
+}
+  
+.dark-theme .table thead th {
+    color: #ffffff;
+    background-color: #343a40;
+}
+  
+.dark-theme .table tbody tr:nth-of-type(odd) {
+    background-color: #454d55;
+}
+
+/* Hover effect for light theme (or the default theme) */
+.table tbody tr:hover {
+    background-color: #e9ecef; /* Light grey for hover in light theme */
+    color: #212529; /* Optional: Darker text color if needed */
+}
+
+/* Hover effect for dark theme */
+.dark-theme .table tbody tr:hover {
+    background-color: #5a6268; /* Darker grey for hover in dark theme */
+    color: #f8f9fa; /* Lighter text color for dark theme */
+}
+
+/* Light theme link hover color */
+.table tbody tr:hover a {
+    color: #007bff; /* Bootstrap's default link color */
+}
+
+/* Dark theme link hover color */
+.dark-theme .table tbody tr:hover a {
+    color: #80bdff; /* A lighter shade for dark mode */
+}
+
+.expandable {
+    max-height: 12px; /* Adjust based on your line height */
+    max-width: 420px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px; /* Reduced from 60px */
+    height: 22px; /* Reduced from 34px */
+    background-color: #ccc;
+    border-radius: 22px; /* Match height for full roundness */
+    transition: background-color .3s;
+}
+
+.toggle-switch .switch {
+    position: absolute;
+    top: 1px; /* Adjusted for smaller size */
+    left: 1px; /* Adjusted for smaller size */
+    width: 20px; /* Reduced from 30px */
+    height: 20px; /* Reduced from 30px */
+    background-color: white;
+    border-radius: 50%;
+    transition: transform .3s;
+}
+
+.toggle-switch.active {
+    background-color: #4CAF50;
+}
+
+.toggle-switch.active .switch {
+    transform: translateX(18px); /* Adjusted to fit the smaller toggle size */
+}
+
+.theme-toggle-container {
+    display: flex;
+    align-items: center; /* Aligns the button and text vertically */
+    gap: 10px; /* Adds some space between the button and the text */
+    font-family: 'Open Sans', sans-serif; /* This should match the font you've chosen */
+}
+
+.toggle-description {
+    font-size: 16px; /* Adjust as needed */
+    color: #333; /* Adjust based on your light theme color */
+    font-weight: 600; /* Makes the font slightly bolder */
+}
+
+/* Additional styles for dark theme */
+.dark-theme .toggle-description {
+    color: #fff; /* Adjust based on your dark theme color */
+}
+
+.bi-info-circle-fill {
+    font-size: 2rem; /* Adjust the size as needed */
+}

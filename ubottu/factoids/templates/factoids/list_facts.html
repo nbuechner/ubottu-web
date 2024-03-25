@@ -1,0 +1,48 @@
+{% extends "factoids/base.html" %}
+{% block content %}
+<script>
+    $(document).ready(function() {
+        $('.expandable').click(function() {
+            $(this).toggleClass('expanded');
+            if ($(this).hasClass('expanded')) {
+                $(this).css({'max-height': 'none', 'white-space': 'normal'});
+            } else {
+                $(this).css({'max-height': '20px', 'white-space': 'nowrap'});
+            }
+        });
+    });
+</script>
+<div class="container mt-3"> 
+    <h2>Facts List</h2>
+    <div class="table-responsive"> <!-- Make table responsive -->
+        <table class="table table-striped table-hover"> <!-- Add Bootstrap classes for styling -->
+            <thead class="thead-dark"> <!-- Use a darker theme for the table header -->
+                <tr>
+                    <th><a href="?sort=name">Name</a></th>
+                    <th>Value</th>
+                    <th>Type</th>
+                    <th>Author</th>
+                    <th><a href="?sort=popularity">Popularity</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fact in facts %}
+                <tr>
+                    <td>{{ fact.name }}</td>
+                    <td class="expandable">{{ fact.value }}</td>
+                    <td>{{ fact.get_ftype_display }}</td>
+                    <td>{% if fact.author %}{{ fact.author.username }}{% else %}N/A{% endif %}</td>
+                    <td>{{ fact.popularity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="alert alert-info d-flex align-items-center" role="alert">
+        <i class="bi bi-info-circle-fill me-2"></i>
+        <div>
+            You can get <a href="/factoids/api/facts/">all</a> or <a href="/factoids/api/facts/">single</a> facts via the API.
+        </div>
+    </div>
+</div>
+{% endblock %}
