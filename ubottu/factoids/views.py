@@ -1,6 +1,8 @@
 from django.http import HttpResponse, Http404
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework.response import Response
 from .models import Fact
 from .serializers import FactSerializer
