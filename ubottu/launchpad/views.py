@@ -18,7 +18,7 @@ import requests
 def group_members(self, group_name):
     try:
         result = fetch_group_members(group_name)
-        return Response({'group_members': group_members, 'group_name': group_name, 'mxids': mxids})
+        return Response(result)
     except KeyError as e:
         # Handle the case where the bug is not found
         print(f"Group with name {group_name} was not found. Error: {e}")
