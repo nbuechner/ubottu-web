@@ -6,23 +6,8 @@ from bugtracker.launchpad_singleton import get_launchpad
 # Connect to Redis
 cache = redis.Redis(host='localhost', port=6379, db=0)
 
-def fetch_individual_or_team_members(person_or_team, launchpad):
-    members = []
-    if person_or_team.is_team:
-        # Recursively fetch members for a team
-        group = launchpad.people[person_or_team.name]
-        for person in group.members:
-            if person.is_team:
-                ext = fetch_individual_or_team_members(person, launchpad)
-                if ext and not person.is_team:
-                    members.append(person.name)
-            else:
-                members.append(person.name)
-    else:
-        members.append(person_or_team.name)
-    return members
 
-def fetch_group_members(group_name):
+def fetch_group_members(group_name, recurse=False):
     try:
         #Try to fetch from cache first
         cached_result = cache.get(f"group_members_{group_name}")
@@ -34,11 +19,11 @@ def fetch_group_members(group_name):
         
         group_members = set()
         for person in group.members:
-            ext = fetch_individual_or_team_members(person, launchpad)
-            if ext:
-                for member in ext:
-                    group_members.add(member)
-        
+            print(person)
+            if not person.is_team:
+                group_members.add(person.name)
+                continue
+
         # MXIDs should be generated for individuals only
         print(group_members)
         mxids = ['@' + member + ':ubuntu.com' for member in group_members]

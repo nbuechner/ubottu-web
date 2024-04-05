@@ -14,7 +14,7 @@ import json
 import requests
 
 @api_view(['GET'])
-@cache_page(60 * 30)  # Cache for 30 minutes
+#@cache_page(60 * 30)  # Cache for 30 minutes
 def group_members(self, group_name):
     try:
         result = fetch_group_members(group_name)
