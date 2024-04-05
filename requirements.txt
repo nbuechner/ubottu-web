@@ -39,3 +39,5 @@ uWSGI==2.0.24
 wcwidth==0.2.13
 wheel==0.43.0
 yarl==1.9.4
+redis==5.0.3
+

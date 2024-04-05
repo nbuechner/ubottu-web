@@ -68,7 +68,7 @@ class FactList(APIView):
         fact_id = kwargs.get('id')
         # Check if a 'name' parameter is provided in the URL.
         name = kwargs.get('name')
-
+        
         if fact_id:
             # Fetching the Fact item by id.
             try:
