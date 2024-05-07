@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from datetime import datetime
 from rest_framework import status
-from bugtracker.launchpad_singleton import get_launchpad
+from .launchpad_singleton import get_launchpad
 from .utils import fetch_group_members  # Adjust the import path as necessary
 import pytz
 import json

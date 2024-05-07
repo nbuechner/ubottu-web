@@ -9,8 +9,7 @@ from geopy.geocoders import Nominatim
 from timezonefinder import TimezoneFinder
 from datetime import datetime
 from rest_framework import status
-#from launchpadlib.launchpad import Launchpad
-from .launchpad_singleton import get_launchpad
+from launchpad.launchpad_singleton import get_launchpad
 import pytz
 import json
 import requests
