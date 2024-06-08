@@ -10,7 +10,7 @@ class FactSerializer(serializers.ModelSerializer):
     user_ids = serializers.SerializerMethodField() 
     class Meta:
         model = Fact
-        fields = ['id', 'name', 'user_ids', 'value', 'ftype', 'author_name', 'create_date', 'change_date', 'popularity']
+        fields = ['id', 'name', 'user_ids', 'value', 'ftype', 'room', 'author_name', 'create_date', 'change_date', 'popularity']
 
     def get_author_name(self, obj):
         # Assuming the author field can be null

@@ -21,6 +21,7 @@
                     <th><a href="?sort=name">Name</a></th>
                     <th>Value</th>
                     <th>Type</th>
+                    <th>Room</th>
                     <th>Author</th>
                     <th><a href="?sort=popularity">Popularity</a></th>
                 </tr>
@@ -31,6 +32,7 @@
                     <td>{{ fact.name }}</td>
                     <td class="expandable">{{ fact.value }}</td>
                     <td>{{ fact.get_ftype_display }}</td>
+                    <td>{% if fact.room %}{{ fact.room }}{% else %}all{% endif %}</td>
                     <td>{% if fact.author %}{{ fact.author.username }}{% else %}N/A{% endif %}</td>
                     <td>{{ fact.popularity }}</td>
                 </tr>

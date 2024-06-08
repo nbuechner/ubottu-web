@@ -4,9 +4,9 @@ from .models import Fact
 from .forms import FactForm
 
 class FactAdmin(admin.ModelAdmin):
-    list_display = ('name', 'value', 'ftype', 'create_date', 'change_date', 'author', 'popularity')
-    list_filter = ('ftype', 'create_date', 'author')  # Fields to add filters for
-    search_fields = ('name', 'value')
+    list_display = ('name', 'value', 'ftype', 'create_date', 'change_date', 'room', 'author', 'popularity')
+    list_filter = ('ftype', 'create_date', 'author', 'room')  # Fields to add filters for
+    search_fields = ('name', 'value', 'room')
     form = FactForm
     def get_form(self, request, obj=None, **kwargs):
         # Check if an instance is being added (obj is None) to exclude 'author_id' field
