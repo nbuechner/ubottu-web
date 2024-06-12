@@ -24,7 +24,7 @@ class Fact(models.Model):
     
     id = models.BigAutoField(primary_key=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    room = models.CharField(null=True, default=None, max_length=128)
+    room = models.CharField(null=True, default=None, max_length=128, blank=True)
     create_date = models.DateTimeField("date published", default=timezone.now)
     change_date = models.DateTimeField("date changed", default=timezone.now)
     popularity = models.IntegerField(default=0)
