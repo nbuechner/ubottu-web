@@ -15,3 +15,5 @@ src
 *.log
 plugins/*
 ubottu/maubot.db
+ubottu/ubottu/settings.py
+ubottu/ubottu/static/*

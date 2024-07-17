@@ -1,7 +1,7 @@
 import redis
 import json
 import traceback
-from bugtracker.launchpad_singleton import get_launchpad
+from . launchpad_singleton import get_launchpad
 
 # Connect to Redis
 cache = redis.Redis(host='localhost', port=6379, db=0)
