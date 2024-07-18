@@ -9,6 +9,7 @@ from datetime import datetime
 from rest_framework import status
 from .launchpad_singleton import get_launchpad
 from .utils import fetch_group_members  # Adjust the import path as necessary
+from .utils import fetch_matrix_accounts  # Adjust the import path as necessary
 import pytz
 import json
 import requests
@@ -27,5 +28,21 @@ def group_members(self, group_name):
         # Handle other potential exceptions
         print(f"An error occurred: {e}")
         print(f"Error processing request for launchpad group {group_name}: {str(e)}")
+        return Response({'error': 'An error occurred processing your request'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['GET'])
+#@cache_page(60 * 30)  # Cache for 30 minutes
+def matrix_profiles(self, profile_id):
+    try:
+        result = fetch_matrix_accounts(profile_id)
+        return Response(result)
+    except KeyError as e:
+        # Handle the case where the bug is not found
+        print(f"Profile with name {profile_id} was not found. Error: {e}")
+        return Response({'error': 'Group not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        # Handle other potential exceptions
+        print(f"An error occurred: {e}")
+        print(f"Error processing request for launchpad profile {profile_id}: {str(e)}")
         return Response({'error': 'An error occurred processing your request'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
