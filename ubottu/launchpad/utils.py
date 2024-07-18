@@ -33,6 +33,7 @@ def fetch_matrix_accounts(profile_id):
             matrix_ids.append(matrix_id)
         # Cache the result with expiration time of 30 minutes (1800 seconds)
         cache.setex(f"matrix_{profile_id}", 1800, json.dumps(matrix_ids))
+        return matrix_ids
         
     except KeyError as e:
         print(f"Profule with name {profile_id} was not found. Error: {e}")
