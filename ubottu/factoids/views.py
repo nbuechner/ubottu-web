@@ -20,24 +20,34 @@ def index(request):
 @api_view(['GET'])
 def city_time(request, city_name):
     try:
-        geolocator = Nominatim(user_agent="Ubottu", timeout=10)
-        location = geolocator.geocode(city_name, exactly_one=True, language='en')
-        if location is None:
-            # If the location wasn't found, return an appropriate response
-            return Response({'error': 'Location not found'}, status=status.HTTP_404_NOT_FOUND)
+        if city_name.upper() == 'UTC':
+            city_name = 'UTC'
+            datetime_obj = datetime.now(pytz.utc)
+            local_time = datetime_obj.strftime('%A, %d %B %Y, %H:%M')
+            data = {'location': '', 'city': city_name, 'local_time': local_time, 'utc_offset': 'UTC+00:00'}
+            return Response(data)
+        else:
+            geolocator = Nominatim(user_agent="Ubottu", timeout=10)
+            location = geolocator.geocode(city_name, exactly_one=True, language='en')
+            if location is None:
+                # If the location wasn't found, return an appropriate response
+                return Response({'error': 'Location not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        tf = TimezoneFinder()
-        timezone_str = tf.timezone_at(lat=location.latitude, lng=location.longitude)  # Get the timezone name
+            tf = TimezoneFinder()
+            timezone_str = tf.timezone_at(lat=location.latitude, lng=location.longitude)  # Get the timezone name
+            
+            if timezone_str is None:
+                # If the timezone wasn't found, return an appropriate response
+                return Response({'error': 'Timezone not found for the given location'}, status=status.HTTP_404_NOT_FOUND)
         
-        if timezone_str is None:
-            # If the timezone wasn't found, return an appropriate response
-            return Response({'error': 'Timezone not found for the given location'}, status=status.HTTP_404_NOT_FOUND)
-        
-        timezone = pytz.timezone(timezone_str)
+            timezone = pytz.timezone(timezone_str)
+
         datetime_obj = datetime.now(timezone)
         local_time = datetime_obj.strftime('%A, %d %B %Y, %H:%M')
         city_name = str(location).split(',')[0]
-        data = {'location': str(location), 'city': city_name, 'local_time': local_time}
+        utc_offset = datetime_obj.strftime('%z')
+        formatted_offset = f"UTC{utc_offset[:3]}:{utc_offset[3:]}"
+        data = {'location': str(location), 'city': city_name, 'local_time': local_time, 'utc_offset': formatted_offset}
         return Response(data)
     except Exception as e:
         # Log the exception if needed
