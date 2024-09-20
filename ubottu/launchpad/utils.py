@@ -1,42 +1,40 @@
 import redis
 import json
 import traceback
-from . launchpad_singleton import get_launchpad
-import requests
-from bs4 import BeautifulSoup
+from .launchpad_singleton import get_launchpad
 
 # Connect to Redis
 cache = redis.Redis(host='localhost', port=6379, db=0)
 
 def fetch_matrix_accounts(profile_id):
     try:
-        #Try to fetch from cache first
+        # Try to fetch from cache first
         cached_result = cache.get(f"matrix_{profile_id}")
         if cached_result:
             return json.loads(cached_result)
 
-        # Fetch the page
-        url = "https://launchpad.net/~" + profile_id
-        response = requests.get(url)
-        page_content = response.content
+        # Fetch Launchpad API data
+        launchpad = get_launchpad()
+        person = launchpad.people[profile_id]
 
-        # Parse the page content
-        soup = BeautifulSoup(page_content, 'html.parser')
-
-        # Locate the elements containing the Matrix IDs
-        matrix_ids_elements = soup.find_all('dd', class_='user-social-accounts__item matrix-account')
+        # Fetch social accounts by platform (Matrix)
+        matrix_accounts = person.getSocialAccountsByPlatform(platform='Matrix platform')
 
         # Extract the Matrix IDs
         matrix_ids = []
-        for element in matrix_ids_elements:
-            matrix_id = element.find('a').text.strip()
+        for account in matrix_accounts:
+            username = account['identity']['username']
+            homeserver = account['identity']['homeserver']
+            matrix_id = f"@{username}:{homeserver}"
             matrix_ids.append(matrix_id)
+
         # Cache the result with expiration time of 30 minutes (1800 seconds)
         cache.setex(f"matrix_{profile_id}", 1800, json.dumps(matrix_ids))
+
         return matrix_ids
         
     except KeyError as e:
-        print(f"Profule with name {profile_id} was not found. Error: {e}")
+        print(f"Profile with name {profile_id} was not found. Error: {e}")
         print(traceback.format_exc())
         return False
     except Exception as e:
@@ -47,23 +45,26 @@ def fetch_matrix_accounts(profile_id):
 
 def fetch_group_members(group_name, recurse=False):
     try:
-        #Try to fetch from cache first
+        # Try to fetch from cache first
         cached_result = cache.get(f"group_members_{group_name}")
         if cached_result:
             return json.loads(cached_result)
 
+        # Fetch the group from the Launchpad API
         launchpad = get_launchpad()
         group = launchpad.people[group_name]
         
         group_members = set()
         for person in group.members:
-            print(person)
             if not person.is_team:
                 group_members.add(person.name)
-                continue
+            # Optional recursion to get sub-teams' members
+            elif recurse:
+                sub_group_members = fetch_group_members(person.name, recurse=True)
+                group_members.update(sub_group_members['group_members'])
 
-        # MXIDs should be generated for individuals only
-        mxids = ['@' + member + ':ubuntu.com' for member in group_members]
+        # Generate MXIDs for individual members
+        mxids = [f"@{member}:ubuntu.com" for member in group_members]
         result = {'group_members': tuple(group_members), 'group_name': group_name, 'mxids': mxids}
 
         # Cache the result with expiration time of 30 minutes (1800 seconds)
